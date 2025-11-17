@@ -1,0 +1,134 @@
+/* Подключаем шрифт Inter из Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
+
+/* Сброс стандартных отступов */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #f5f5f5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.container {
+    width: 100%;
+    max-width: 1000px;
+}
+
+/* Форма ввода */
+.weather-form {
+    background: white;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.input-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 40px;
+}
+
+.input-group label {
+    font-size: 40px;
+    font-weight: 400;
+    color: #000000;
+    min-width: 200px;
+    margin-right: 20px;
+}
+
+.input-group input {
+    flex: 1;
+    height: 49px;
+    border: 2px solid #000000;
+    border-radius: 4px;
+    padding: 0 15px;
+    font-size: 20px;
+    font-family: 'Inter', sans-serif;
+}
+
+.input-group input:focus {
+    outline: none;
+    border-color: #355FCA;
+}
+
+/* Кнопка */
+.btn-submit {
+    width: 100%;
+    height: 91px;
+    background: #355FCA;
+    border: none;
+    border-radius: 8px;
+    color: #FFFFFF;
+    font-size: 40px;
+    font-weight: 400;
+    font-family: 'Inter', sans-serif;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.btn-submit:hover {
+    background: #2a4ba8;
+}
+
+.btn-submit:active {
+    transform: scale(0.98);
+}
+
+/* Результат погоды */
+.weather-result {
+    margin-top: 80px;
+    text-align: center;
+}
+
+.temperature {
+    font-size: 40px;
+    font-weight: 400;
+    color: #000000;
+}
+
+/* Скрываем результат до получения данных */
+.weather-result:empty {
+    display: none;
+}
+
+/* Карточка погоды */
+.weather-card {
+    background: white;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.weather-card h2 {
+    font-size: 32px;
+    margin-bottom: 20px;
+    color: #355FCA;
+}
+
+.weather-card .description {
+    font-size: 24px;
+    margin: 20px 0;
+    text-transform: capitalize;
+    color: #666;
+}
+
+.weather-details {
+    margin-top: 30px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
+
+.weather-details p {
+    font-size: 18px;
+    color: #333;
+}

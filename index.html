@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Погода</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Форма ввода координат -->
+        <div class="weather-form">
+            <div class="input-group">
+                <label for="latitude">Широта</label>
+                <input type="text" id="latitude" placeholder="Например: 52.52">
+            </div>
+            
+            <div class="input-group">
+                <label for="longitude">Долгота</label>
+                <input type="text" id="longitude" placeholder="Например: 13.41">
+            </div>
+            
+            <button class="btn-submit" id="getWeatherBtn">Показать погоду</button>
+        </div>
+
+        <!-- Область для отображения погоды -->
+        <div class="weather-result" id="weatherResult">
+            <div class="temperature" id="temperature"></div>
+        </div>
+    </div>
+
+    <script src="js/validation.js"></script>
+    <script src="js/weather.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
