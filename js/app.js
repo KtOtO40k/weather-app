@@ -1,5 +1,7 @@
 // Главный модуль приложения
 const App = {
+    isLoading: false, // Флаг загрузки
+
     // Инициализация приложения
     init() {
         this.attachEventListeners();

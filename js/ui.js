@@ -14,7 +14,21 @@ const UI = {
 
     // Показываем ошибку (временное сообщение)
     showError(message) {
-        alert(`❌ ${message}`);
+        // Создаём временное уведомление
+        const errorDiv = document.createElement('div');
+        errorDiv.className = 'error-notification';
+        errorDiv.innerHTML = `
+            <span>❌ ${message}</span>
+            <button onclick="this.parentElement.remove()">×</button>
+        `;
+        document.body.appendChild(errorDiv);
+
+        // Автоматически удаляем через 5 секунд
+        setTimeout(() => {
+            if (errorDiv.parentElement) {
+                errorDiv.remove();
+            }
+        }, 5000);
     },
 
     // Показываем загрузку
@@ -50,6 +64,9 @@ const UI = {
                     <p>Ветер: ${weatherData.windSpeed} м/с</p>
                     <p>Давление: ${weatherData.pressure} гПа</p>
                 </div>
+                
+                <!-- Карта -->
+                ${MapManager.getMapHTML(widgetId)}
             </div>
         `;
 
@@ -58,13 +75,27 @@ const UI = {
         
         // Сохраняем виджет
         this.widgets.push({ id: widgetId, coords, weatherData });
+
+        // Создаём карту
+        MapManager.createMap(
+            widgetId, 
+            coords.lat, 
+            coords.lon, 
+            weatherData.cityName
+        );
     },
 
     // Удаляем виджет
     removeWidget(widgetId) {
         const widget = document.getElementById(widgetId);
         if (widget) {
+            // Удаляем карту
+            MapManager.removeMap(widgetId);
+            
+            // Удаляем виджет из DOM
             widget.remove();
+            
+            // Удаляем из массива
             this.widgets = this.widgets.filter(w => w.id !== widgetId);
         }
     },
