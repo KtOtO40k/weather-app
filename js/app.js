@@ -47,8 +47,14 @@ const App = {
                 validation.longitude
             );
 
-            // Отображаем результат
-            UI.displayWeather(weatherData);
+            // Создаём виджет
+            UI.createWidget(weatherData, {
+                lat: validation.latitude,
+                lon: validation.longitude
+            });
+
+            // Очищаем поля ввода
+            UI.clearInputs();
             
         } catch (error) {
             UI.showError(error.message);

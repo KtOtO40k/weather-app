@@ -23,12 +23,20 @@ body {
     max-width: 1000px;
 }
 
+.app-title {
+    text-align: center;
+    font-size: 48px;
+    color: #355FCA;
+    margin-bottom: 40px;
+}
+
 /* Форма ввода */
 .weather-form {
     background: white;
     padding: 40px;
     border-radius: 12px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    margin-bottom: 40px;
 }
 
 .input-group {
@@ -112,6 +120,13 @@ body {
     font-size: 32px;
     margin-bottom: 20px;
     color: #355FCA;
+}
+
+.weather-icon {
+    width: 150px;
+    height: 150px;
+    margin: 0 auto;
+    display: block;
 }
 
 .weather-card .description {

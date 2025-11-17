@@ -1,24 +1,20 @@
 // Объект для управления UI
 const UI = {
+    widgets: [], // Массив для хранения виджетов
+
     // Получаем элементы формы
     getFormElements() {
         return {
             latInput: document.getElementById('latitude'),
             lonInput: document.getElementById('longitude'),
             submitBtn: document.getElementById('getWeatherBtn'),
-            resultDiv: document.getElementById('weatherResult'),
-            tempDiv: document.getElementById('temperature')
+            widgetsContainer: document.getElementById('widgetsContainer')
         };
     },
 
-    // Показываем ошибку
+    // Показываем ошибку (временное сообщение)
     showError(message) {
-        const elements = this.getFormElements();
-        elements.resultDiv.innerHTML = `
-            <div style="color: red; font-size: 24px;">
-                ⚠️ ${message}
-            </div>
-        `;
+        alert(`❌ ${message}`);
     },
 
     // Показываем загрузку
@@ -26,11 +22,6 @@ const UI = {
         const elements = this.getFormElements();
         elements.submitBtn.disabled = true;
         elements.submitBtn.textContent = 'Загрузка...';
-        elements.resultDiv.innerHTML = `
-            <div style="font-size: 24px;">
-                ⏳ Получение данных...
-            </div>
-        `;
     },
 
     // Убираем состояние загрузки
@@ -40,13 +31,17 @@ const UI = {
         elements.submitBtn.textContent = 'Показать погоду';
     },
 
-    // Показываем погоду
-    displayWeather(weatherData) {
-        const elements = this.getFormElements();
+    // Создаём виджет погоды
+    createWidget(weatherData, coords) {
+        const widgetId = `widget-${Date.now()}`;
+        const iconUrl = `https://openweathermap.org/img/wn/${weatherData.icon}@4x.png`;
         
-        elements.resultDiv.innerHTML = `
-            <div class="weather-card">
+        const widgetHTML = `
+            <div class="weather-card" id="${widgetId}">
+                <button class="remove-widget" onclick="UI.removeWidget('${widgetId}')">×</button>
                 <h2>${weatherData.cityName}, ${weatherData.country}</h2>
+                <p style="font-size: 14px; color: #999;">Координаты: ${coords.lat.toFixed(2)}, ${coords.lon.toFixed(2)}</p>
+                <img src="${iconUrl}" alt="${weatherData.description}" class="weather-icon">
                 <div class="temperature">${weatherData.temperature}°</div>
                 <div class="description">${weatherData.description}</div>
                 <div class="weather-details">
@@ -57,6 +52,21 @@ const UI = {
                 </div>
             </div>
         `;
+
+        const elements = this.getFormElements();
+        elements.widgetsContainer.insertAdjacentHTML('afterbegin', widgetHTML);
+        
+        // Сохраняем виджет
+        this.widgets.push({ id: widgetId, coords, weatherData });
+    },
+
+    // Удаляем виджет
+    removeWidget(widgetId) {
+        const widget = document.getElementById(widgetId);
+        if (widget) {
+            widget.remove();
+            this.widgets = this.widgets.filter(w => w.id !== widgetId);
+        }
     },
 
     // Получаем значения из полей ввода
@@ -66,5 +76,12 @@ const UI = {
             latitude: elements.latInput.value.trim(),
             longitude: elements.lonInput.value.trim()
         };
+    },
+
+    // Очищаем поля ввода
+    clearInputs() {
+        const elements = this.getFormElements();
+        elements.latInput.value = '';
+        elements.lonInput.value = '';
     }
 };
