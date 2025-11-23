@@ -5,56 +5,63 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Погода</title>
     
-    <!-- Leaflet CSS -->
+
+
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
     <div class="container">
-        <h1 class="app-title">Погода в мире 🌍</h1>
+        <h1 class="app-title">Abanking Погода</h1>
         
-        <!-- Форма ввода координат -->
+        
         <div class="weather-form">
-            <!-- Переключатель режима поиска -->
+            
+
             <div class="search-mode-toggle">
                 <button class="mode-btn active" id="coordsMode">По координатам</button>
-                <button class="mode-btn" id="cityMode">По названию города</button>
+                <button class="mode-btn" id="cityMode">По названию города/места</button>
             </div>
 
-            <!-- Поиск по координатам -->
+            
+            
             <div id="coordsSearch" class="search-section active">
                 <div class="input-group">
                     <label for="latitude">Широта</label>
-                    <input type="text" id="latitude" placeholder="Например: 52.23">
+                    <input type="text" id="latitude" placeholder="Например: 56.8575">
                 </div>
                 
                 <div class="input-group">
                     <label for="longitude">Долгота</label>
-                    <input type="text" id="longitude" placeholder="Например: 21.01">
+                    <input type="text" id="longitude" placeholder="Например: 60.6125">
                 </div>
             </div>
 
-            <!-- Поиск по названию города -->
+            
             <div id="citySearch" class="search-section">
                 <div class="input-group">
                     <label for="cityName">Город</label>
-                    <input type="text" id="cityName" placeholder="Например: Warsaw или Варшава">
+                    <input type="text" id="cityName" placeholder="Например: Moscow или Екатеринбург, RU">
+                    
                 </div>
-                <p class="hint">💡 Можно указать страну через запятую: "Warsaw, PL" или "Москва, RU"</p>
+                
             </div>
             
             <button class="btn-submit" id="getWeatherBtn">Показать погоду</button>
         </div>
 
-        <!-- Область для отображения виджетов -->
+        
+
+
+
         <div class="widgets-container" id="widgetsContainer"></div>
     </div>
 
-    <!-- Leaflet JS -->
+   
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     
-    <!-- Наши скрипты В СТРОГОМ ПОРЯДКЕ -->
+    
     <script src="js/validation.js"></script>
     <script src="js/weather.js"></script>
     <script src="js/map.js"></script>

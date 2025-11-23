@@ -1,9 +1,7 @@
-// Объект для управления UI
-const UI = {
-    widgets: [], // Массив для хранения виджетов
-    currentMode: 'coords', // Текущий режим: 'coords' или 'city'
 
-    // Получаем элементы формы
+const UI = {
+    widgets: [], 
+    currentMode: 'coords', 
     getFormElements() {
         return {
             latInput: document.getElementById('latitude'),
@@ -18,7 +16,7 @@ const UI = {
         };
     },
 
-    // Инициализация переключателя режимов
+    
     initModeToggle() {
         const elements = this.getFormElements();
         
@@ -31,7 +29,7 @@ const UI = {
         });
     },
 
-    // Переключение режима
+   
     switchMode(mode) {
         const elements = this.getFormElements();
         this.currentMode = mode;
@@ -49,18 +47,18 @@ const UI = {
         }
     },
 
-    // Показываем ошибку (временное сообщение)
+    
     showError(message) {
-        // Создаём временное уведомление
+        
         const errorDiv = document.createElement('div');
         errorDiv.className = 'error-notification';
         errorDiv.innerHTML = `
-            <span>❌ ${message}</span>
+            <span> ${message}</span>
             <button onclick="this.parentElement.remove()">×</button>
         `;
         document.body.appendChild(errorDiv);
 
-        // Автоматически удаляем через 5 секунд
+       
         setTimeout(() => {
             if (errorDiv.parentElement) {
                 errorDiv.remove();
@@ -68,21 +66,21 @@ const UI = {
         }, 5000);
     },
 
-    // Показываем загрузку
+   
     showLoading() {
         const elements = this.getFormElements();
         elements.submitBtn.disabled = true;
-        elements.submitBtn.textContent = 'Загрузка...';
+        elements.submitBtn.textContent = 'Загрузка';
     },
 
-    // Убираем состояние загрузки
+    
     hideLoading() {
         const elements = this.getFormElements();
         elements.submitBtn.disabled = false;
         elements.submitBtn.textContent = 'Показать погоду';
     },
 
-    // Создаём виджет погоды
+    
     createWidget(weatherData, coords) {
         const widgetId = `widget-${Date.now()}`;
         const iconUrl = `https://openweathermap.org/img/wn/${weatherData.icon}@4x.png`;
@@ -102,7 +100,7 @@ const UI = {
                     <p>Давление: ${weatherData.pressure} гПа</p>
                 </div>
                 
-                <!-- Карта -->
+                
                 ${MapManager.getMapHTML(widgetId)}
             </div>
         `;
@@ -110,10 +108,10 @@ const UI = {
         const elements = this.getFormElements();
         elements.widgetsContainer.insertAdjacentHTML('afterbegin', widgetHTML);
         
-        // Сохраняем виджет
+        
         this.widgets.push({ id: widgetId, coords, weatherData });
 
-        // Создаём карту
+       
         MapManager.createMap(
             widgetId, 
             coords.lat, 
@@ -122,22 +120,17 @@ const UI = {
         );
     },
 
-    // Удаляем виджет
+    
     removeWidget(widgetId) {
         const widget = document.getElementById(widgetId);
         if (widget) {
-            // Удаляем карту
             MapManager.removeMap(widgetId);
-            
-            // Удаляем виджет из DOM
             widget.remove();
-            
-            // Удаляем из массива
             this.widgets = this.widgets.filter(w => w.id !== widgetId);
         }
     },
 
-    // Получаем значения из полей ввода
+   
     getInputValues() {
         const elements = this.getFormElements();
         
@@ -155,7 +148,6 @@ const UI = {
         }
     },
 
-    // Очищаем поля ввода
     clearInputs() {
         const elements = this.getFormElements();
         

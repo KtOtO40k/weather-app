@@ -1,6 +1,6 @@
-// Объект для валидации координат
+
 const Validator = {
-    // Проверяем широту (latitude): от -90 до 90
+    
     validateLatitude(lat) {
         const num = parseFloat(lat);
         
@@ -15,7 +15,7 @@ const Validator = {
         return { valid: true, value: num };
     },
 
-    // Проверяем долготу (longitude): от -180 до 180
+    
     validateLongitude(lon) {
         const num = parseFloat(lon);
         
@@ -30,7 +30,7 @@ const Validator = {
         return { valid: true, value: num };
     },
 
-    // Проверяем оба значения сразу
+    
     validateCoordinates(lat, lon) {
         const latResult = this.validateLatitude(lat);
         const lonResult = this.validateLongitude(lon);
@@ -50,7 +50,7 @@ const Validator = {
         };
     },
 
-    // Проверяем название города
+    
     validateCityName(cityName) {
         const trimmed = cityName.trim();
         
