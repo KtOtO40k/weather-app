@@ -48,5 +48,24 @@ const Validator = {
             latitude: latResult.value, 
             longitude: lonResult.value 
         };
+    },
+
+    // Проверяем название города
+    validateCityName(cityName) {
+        const trimmed = cityName.trim();
+        
+        if (!trimmed) {
+            return { valid: false, message: 'Введите название города' };
+        }
+        
+        if (trimmed.length < 2) {
+            return { valid: false, message: 'Название города слишком короткое' };
+        }
+        
+        if (trimmed.length > 100) {
+            return { valid: false, message: 'Название города слишком длинное' };
+        }
+        
+        return { valid: true, cityName: trimmed };
     }
 };

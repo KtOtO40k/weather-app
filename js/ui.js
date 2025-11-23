@@ -1,15 +1,52 @@
 // Объект для управления UI
 const UI = {
     widgets: [], // Массив для хранения виджетов
+    currentMode: 'coords', // Текущий режим: 'coords' или 'city'
 
     // Получаем элементы формы
     getFormElements() {
         return {
             latInput: document.getElementById('latitude'),
             lonInput: document.getElementById('longitude'),
+            cityInput: document.getElementById('cityName'),
             submitBtn: document.getElementById('getWeatherBtn'),
-            widgetsContainer: document.getElementById('widgetsContainer')
+            widgetsContainer: document.getElementById('widgetsContainer'),
+            coordsMode: document.getElementById('coordsMode'),
+            cityMode: document.getElementById('cityMode'),
+            coordsSearch: document.getElementById('coordsSearch'),
+            citySearch: document.getElementById('citySearch')
         };
+    },
+
+    // Инициализация переключателя режимов
+    initModeToggle() {
+        const elements = this.getFormElements();
+        
+        elements.coordsMode.addEventListener('click', () => {
+            this.switchMode('coords');
+        });
+
+        elements.cityMode.addEventListener('click', () => {
+            this.switchMode('city');
+        });
+    },
+
+    // Переключение режима
+    switchMode(mode) {
+        const elements = this.getFormElements();
+        this.currentMode = mode;
+
+        if (mode === 'coords') {
+            elements.coordsMode.classList.add('active');
+            elements.cityMode.classList.remove('active');
+            elements.coordsSearch.classList.add('active');
+            elements.citySearch.classList.remove('active');
+        } else {
+            elements.cityMode.classList.add('active');
+            elements.coordsMode.classList.remove('active');
+            elements.citySearch.classList.add('active');
+            elements.coordsSearch.classList.remove('active');
+        }
     },
 
     // Показываем ошибку (временное сообщение)
@@ -103,16 +140,30 @@ const UI = {
     // Получаем значения из полей ввода
     getInputValues() {
         const elements = this.getFormElements();
-        return {
-            latitude: elements.latInput.value.trim(),
-            longitude: elements.lonInput.value.trim()
-        };
+        
+        if (this.currentMode === 'coords') {
+            return {
+                mode: 'coords',
+                latitude: elements.latInput.value.trim(),
+                longitude: elements.lonInput.value.trim()
+            };
+        } else {
+            return {
+                mode: 'city',
+                cityName: elements.cityInput.value.trim()
+            };
+        }
     },
 
     // Очищаем поля ввода
     clearInputs() {
         const elements = this.getFormElements();
-        elements.latInput.value = '';
-        elements.lonInput.value = '';
+        
+        if (this.currentMode === 'coords') {
+            elements.latInput.value = '';
+            elements.lonInput.value = '';
+        } else {
+            elements.cityInput.value = '';
+        }
     }
 };

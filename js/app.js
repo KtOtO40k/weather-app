@@ -4,6 +4,7 @@ const App = {
 
     // Инициализация приложения
     init() {
+        UI.initModeToggle(); // Инициализируем переключатель режимов
         this.attachEventListeners();
     },
 
@@ -16,7 +17,7 @@ const App = {
             this.handleWeatherRequest();
         });
 
-        // Enter в полях ввода
+        // Enter в полях координат
         elements.latInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') this.handleWeatherRequest();
         });
@@ -24,36 +25,73 @@ const App = {
         elements.lonInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') this.handleWeatherRequest();
         });
+
+        // Enter в поле города
+        elements.cityInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') this.handleWeatherRequest();
+        });
     },
 
     // Обработка запроса погоды
     async handleWeatherRequest() {
-        // Получаем значения из полей
-        const { latitude, longitude } = UI.getInputValues();
-
-        // Валидируем
-        const validation = Validator.validateCoordinates(latitude, longitude);
-        
-        if (!validation.valid) {
-            UI.showError(validation.message);
+        // Если уже идёт загрузка - выходим
+        if (this.isLoading) {
+            console.log('Запрос уже выполняется');
             return;
         }
 
+        // Получаем значения из полей
+        const inputData = UI.getInputValues();
+
+        let weatherData;
+        let coords;
+
+        // Устанавливаем флаг загрузки
+        this.isLoading = true;
+        
         // Показываем загрузку
         UI.showLoading();
 
         try {
-            // Получаем погоду
-            const weatherData = await WeatherAPI.getWeatherByCoords(
-                validation.latitude, 
-                validation.longitude
-            );
+            // Обрабатываем в зависимости от режима
+            if (inputData.mode === 'coords') {
+                // Режим координат
+                const validation = Validator.validateCoordinates(inputData.latitude, inputData.longitude);
+                
+                if (!validation.valid) {
+                    UI.showError(validation.message);
+                    return;
+                }
+
+                // Получаем погоду по координатам
+                weatherData = await WeatherAPI.getWeatherByCoords(
+                    validation.latitude, 
+                    validation.longitude
+                );
+
+                coords = {
+                    lat: validation.latitude,
+                    lon: validation.longitude
+                };
+
+            } else {
+                // Режим поиска по городу
+                const validation = Validator.validateCityName(inputData.cityName);
+                
+                if (!validation.valid) {
+                    UI.showError(validation.message);
+                    return;
+                }
+
+                // Получаем погоду по названию города
+                weatherData = await WeatherAPI.getWeatherByCity(validation.cityName);
+
+                // Координаты приходят из API
+                coords = weatherData.coordinates;
+            }
 
             // Создаём виджет
-            UI.createWidget(weatherData, {
-                lat: validation.latitude,
-                lon: validation.longitude
-            });
+            UI.createWidget(weatherData, coords);
 
             // Очищаем поля ввода
             UI.clearInputs();
@@ -61,8 +99,9 @@ const App = {
         } catch (error) {
             UI.showError(error.message);
         } finally {
-            // Убираем загрузку
+            // Убираем загрузку и снимаем флаг
             UI.hideLoading();
+            this.isLoading = false;
         }
     }
 };

@@ -1,6 +1,6 @@
 // Объект для работы с погодным API
 const WeatherAPI = {
-    apiKey: '5aa741a37ff6512516bcb3da3ea973f0',
+    apiKey: 'def8c396f263a05f9ac50851ff2b88fd',
     baseUrl: 'https://api.openweathermap.org/data/2.5/weather',
     cache: {}, // Кэш для хранения результатов
     cacheDuration: 10 * 60 * 1000, // 10 минут в миллисекундах
@@ -70,6 +70,48 @@ const WeatherAPI = {
             
         } catch (error) {
             console.error('Ошибка получения погоды:', error);
+            throw error;
+        }
+    },
+
+    // Получаем погоду по названию города
+    async getWeatherByCity(cityName) {
+        try {
+            // Формируем URL для поиска по городу
+            const url = `${this.baseUrl}?q=${encodeURIComponent(cityName)}&appid=${this.apiKey}&units=metric&lang=ru`;
+            
+            console.log('Поиск города:', cityName);
+            
+            // Делаем запрос
+            const response = await fetch(url);
+            
+            // Проверяем успешность запроса
+            if (!response.ok) {
+                if (response.status === 404) {
+                    throw new Error('Город не найден. Проверьте название или попробуйте указать страну (например: "Warsaw, PL")');
+                }
+                if (response.status === 429) {
+                    throw new Error('Превышен лимит запросов. Подождите минуту и попробуйте снова.');
+                }
+                throw new Error(`Ошибка HTTP: ${response.status}`);
+            }
+            
+            // Парсим JSON
+            const data = await response.json();
+            
+            // Форматируем данные
+            const formattedData = this.formatWeatherData(data);
+            
+            // Добавляем координаты в результат
+            formattedData.coordinates = {
+                lat: data.coord.lat,
+                lon: data.coord.lon
+            };
+            
+            return formattedData;
+            
+        } catch (error) {
+            console.error('Ошибка поиска города:', error);
             throw error;
         }
     },
