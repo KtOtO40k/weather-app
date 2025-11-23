@@ -57,7 +57,7 @@
 
 * weather-app/
 
-index.html (Основной файл интерфейса)
+     index.html (Основной файл интерфейса)
 
 *    css/
 
