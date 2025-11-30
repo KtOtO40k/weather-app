@@ -332,18 +332,6 @@ body {
 }
 
 
-.leaflet-popup-content-wrapper {
-    background: rgba(255, 255, 255, 0.9) !important;
-    backdrop-filter: blur(10px);
-    border-radius: 12px !important;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.2) !important;
-    color: #1d1d1f !important;
-    font-family: 'Inter', sans-serif !important;
-}
-
-.leaflet-popup-tip {
-    background: rgba(255, 255, 255, 0.9) !important;
-}
 
 
 .error-notification {
@@ -442,3 +430,4 @@ body {
         height: 80px;
     }
 }
+

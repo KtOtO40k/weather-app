@@ -2,56 +2,64 @@
 const MapManager = {
     maps: {}, 
 
-    
+
     createMap(widgetId, lat, lon, cityName) {
         const mapId = `map-${widgetId}`;
         
-        
         setTimeout(() => {
-            
-            const map = L.map(mapId).setView([lat, lon], 10);
+            try {
+                const mapContainer = document.getElementById(mapId);
+                if (!mapContainer) return;
 
-            
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '© OpenStreetMap contributors',
-                maxZoom: 18
-            }).addTo(map);
 
-            
-            const customIcon = L.divIcon({
-                html: '📍',
-                className: 'custom-marker',
-                iconSize: [30, 30],
-                iconAnchor: [15, 30]
-            });
+                const delta = 0.05; 
+                const bbox = [
+                    lon - delta,  
+                    lat - delta, 
+                    lon + delta,  
+                    lat + delta   
+                ].join(',');
 
-            
-            const marker = L.marker([lat, lon], { icon: customIcon }).addTo(map);
-            
-            
-            marker.bindPopup(`
-                <strong>${cityName}</strong><br>
-                Координаты:<br>
-                ${lat.toFixed(4)}, ${lon.toFixed(4)}
-            `).openPopup();
+                const iframe = document.createElement('iframe');
+                iframe.width = '100%';
+                iframe.height = '300';
+                iframe.frameBorder = '0';
+                iframe.scrolling = 'no';
+                iframe.marginHeight = '0';
+                iframe.marginWidth = '0';
+                iframe.style.borderRadius = '8px';
+                iframe.style.border = '2px solid #e0e0e0';
+                
+          
+                iframe.src = `https://www.openstreetmap.org/export/embed.html?bbox=${bbox}&layer=mapnik&marker=${lat},${lon}`;
+                
+                
+                mapContainer.innerHTML = '';
+                mapContainer.appendChild(iframe);
 
-            
-            this.maps[widgetId] = map;
+                
 
-            
-            map.invalidateSize();
+                // Сохраняем ссылку
+                this.maps[widgetId] = iframe;
+
+            } catch (error) {
+                console.error('Ошибка создания карты:', error);
+            }
         }, 100);
     },
 
-    
+    // Удаляем карту
     removeMap(widgetId) {
         if (this.maps[widgetId]) {
-            this.maps[widgetId].remove();
-            delete this.maps[widgetId];
+            try {
+                delete this.maps[widgetId];
+            } catch (error) {
+                console.error('Ошибка удаления карты:', error);
+            }
         }
     },
 
-    
+    // Генерируем HTML для контейнера карты
     getMapHTML(widgetId) {
         return `<div id="map-${widgetId}" class="widget-map"></div>`;
     }
