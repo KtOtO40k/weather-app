@@ -39,7 +39,7 @@ const MapManager = {
 
                 
 
-                // Сохраняем ссылку
+                
                 this.maps[widgetId] = iframe;
 
             } catch (error) {
@@ -48,7 +48,7 @@ const MapManager = {
         }, 100);
     },
 
-    // Удаляем карту
+
     removeMap(widgetId) {
         if (this.maps[widgetId]) {
             try {
@@ -59,7 +59,7 @@ const MapManager = {
         }
     },
 
-    // Генерируем HTML для контейнера карты
+
     getMapHTML(widgetId) {
         return `<div id="map-${widgetId}" class="widget-map"></div>`;
     }
